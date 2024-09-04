@@ -2,7 +2,7 @@
 title: "Homework: Finding Your Way in R and Python"
 execute:
   error: true
-author: "Your Name"
+author: "Donya Negahbani"
 output: html_document
 ---
 
@@ -18,7 +18,7 @@ Consider the 6 counting words examples in the [textbook module](https://srvander
 
 ---
 
-Replace this line of text with your 2-3 sentences about script-mode, interactive mode, and command-line mode in R and Python
+Script mode, interactive mode, and command-line mode in R and Python each have distinct differences and similarities. Interactive mode allows users to execute code one line at a time, providing immediate feedback, making it ideal for experimentation and quick tasks. Script mode involves writing a sequence of commands in a file that can be executed all at once, which is useful for automating tasks and ensuring reproducibility. Command-line mode allows scripts to be executed directly from the terminal or command prompt, enabling automation without the need for an IDE, often used in production or for batch processing. While all three modes support code execution, interactive mode emphasizes exploration, script mode focuses on repeatability, and command-line mode excels in automation.
 
 ---
 
@@ -34,7 +34,10 @@ $$a^2 + b^2 = c^2$$
 Use the chunk below to define variables $a$, $b$, and $c$, where you define the values of $a$ and $b$, and $c$ is determined mathematically. You may need to find the square root function in R to make this work.
 
 ```{r pythagorean-theorem-r}
-# Your pythagorean theorem code goes here
+a <- 3
+b <- 4
+c <- sqrt(a^2 + b^2)
+print(c)
 
 ```
 
@@ -45,7 +48,16 @@ $$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
 Use the chunk below to define variables $a$, $b$, and $c$, and then define $x1$ and $x2$, the possible values for $x$. You may find it helpful to define a few additional variables, such as the value of the discriminant $\sqrt{b^2 - 4ac}$, to make it easier to calculate the results. 
 
 ```{python quad-formula-py}
-# Your quadratic formula code goes here
+a = 1
+b = -7
+c = 12
+
+discriminant = b**2 - 4*a*c
+
+x1 = (-b + discriminant**0.5) / (2*a)
+x2 = (-b - discriminant**0.5) / (2*a)
+
+print(f'The solutions are x1 = {x1} and x2 = {x2}')
 
 ```
 
@@ -76,9 +88,23 @@ salary
 
 The problem with the data is:
 
+The Salary column in this data frame contains values with dollar signs and commas (e.g., $67,872.00). This format prevents the column from being treated as numeric, which is necessary for accurate plotting and data analysis.
+
 Here is how I solved the problem:
 
+I used the gsub function to remove the dollar signs and commas from the Salary column and then converted the cleaned data to numeric using the as.numeric function. This allowed the Salary values to be treated as numbers.
+
 ```{r cleaning-the-data-r}
-# Your implementation code goes here
+library(ggplot2)
+salary <- read.table("02-data.tsv", sep = "\t", header = TRUE)
+
+salary$Salary <- as.numeric(gsub("[\\$,]", "", salary$Salary))
+
+ggplot(salary, aes(x = Hire.Year, y = Salary, label = Name)) + 
+  geom_label() +
+  labs(title = "Salary vs Hire Year", x = "Hire Year", y = "Salary") +
+  theme_minimal()
+
+print(salary)
 
 ```
