@@ -33,13 +33,31 @@ $$a^2 + b^2 = c^2$$
 
 Use the chunk below to define variables $a$, $b$, and $c$, where you define the values of $a$ and $b$, and $c$ is determined mathematically. You may need to find the square root function in R to make this work.
 
-```{r pythagorean-theorem-r}
-a <- 3
-b <- 4
+```{r}
+
+a <- sample(-10:10, 1)
+b <- sample(-10:10, 1)
+
 c <- sqrt(a^2 + b^2)
-print(c)
+
+print(paste("a =", a))
+print(paste("b =", b))
+print(paste("c =", c))
 
 ```
+```{python}
+import math
+import random
+
+a = random.randint(-10, 10)
+b = random.randint(-10, 10)
+c = math.sqrt(a**2 + b**2)
+
+print(f"a = {a}")
+print(f"b = {b}")
+print(f"c = {c}")
+```
+
 
 ## Quadratic Formula in Python
 
@@ -47,19 +65,44 @@ $$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
 
 Use the chunk below to define variables $a$, $b$, and $c$, and then define $x1$ and $x2$, the possible values for $x$. You may find it helpful to define a few additional variables, such as the value of the discriminant $\sqrt{b^2 - 4ac}$, to make it easier to calculate the results. 
 
-```{python quad-formula-py}
-a = 1
-b = -7
-c = 12
+```{r}
+a <- sample(-10:10, 1)
+b <- sample(-10:10, 1)
+c <- sample(-20:20, 1)
+
+discriminant <- b^2 - 4 * a * c
+
+if (discriminant >= 0) {
+  x1 <- (-b + sqrt(discriminant)) / (2 * a)
+  x2 <- (-b - sqrt(discriminant)) / (2 * a)
+  print(sprintf('The solutions are x1 = %.2f and x2 = %.2f', x1, x2))
+} else {
+  print(sprintf('The discriminant is negative (%.2f), so no real solutions exist.', discriminant))
+}
+```
+
+
+```{python}
+import random
+import math
+
+a = random.randint(-8, 8)
+b = random.randint(-12, 20)
+c = random.randint(-10, 10)
 
 discriminant = b**2 - 4*a*c
 
-x1 = (-b + discriminant**0.5) / (2*a)
-x2 = (-b - discriminant**0.5) / (2*a)
+if discriminant >= 0:
+    x1 = (-b + math.sqrt(discriminant)) / (2*a)
+    x2 = (-b - math.sqrt(discriminant)) / (2*a)
+    print(f'The solutions are x1 = {x1} and x2 = {x2}')
+else:
+    print(f'The discriminant is negative ({discriminant}), so no real solutions exist.')
 
-print(f'The solutions are x1 = {x1} and x2 = {x2}')
 
 ```
+
+
 
 # Debugging practice
 
@@ -108,3 +151,28 @@ ggplot(salary, aes(x = Hire.Year, y = Salary, label = Name)) +
 print(salary)
 
 ```
+
+
+
+```{python}
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+salary = pd.read_csv("02-data.tsv", sep="\t")
+
+salary['Salary'] = salary['Salary'].replace({'\$': '', ',': ''}, regex=True).astype(float)
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x='Hire Year', y='Salary', data=salary)
+for i in range(len(salary)):
+    plt.text(salary['Hire Year'][i], salary['Salary'][i], salary['Name'][i], 
+             fontsize=9, ha='right')
+plt.title('Salary vs Hire Year')
+plt.xlabel('Hire Year')
+plt.ylabel('Salary')
+plt.show()
+print(salary)
+
+```
+The graph suggests a negative relationship between salary and the year of hiring, meaning that employees hired earlier tend to have higher salaries. For example, Michael Scott, hired around 1995, has the highest salary, while Pam Beesly, hired in 2003, has the lowest salary. This may indicate that salary increases with tenure or that more recent hires receive lower starting salaries.
